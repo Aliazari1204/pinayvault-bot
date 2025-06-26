@@ -6,10 +6,10 @@ A “Share to Unlock” Telegram bot. Users must share the bot to unlock access 
 ## How to Deploy (Railway)
 
 1. **Click “Deploy to Railway”**  
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/YOUR_GITHUB_REPO_HERE)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/Aliazari1204/pinayvault-bot)
 
 2. **Set Environment Variable**  
-- `TOKEN` – 7705698862:AAF5-r4k-VnUmTjNTukCp8tYRGzGZxPhcQo
+- `TOKEN` – Your Telegram Bot Token
 
 3. **Start Deployment**  
 - Railway will auto-install requirements and start the bot.
