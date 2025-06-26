@@ -1,0 +1,45 @@
+import logging
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler
+
+TOKEN = "7705698862:AAF5-r4k-VnUmTjNTukCp8tYRGzGZxPhcQo"
+
+# Enable logging
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+
+# In-memory user unlock status (for demo only; use DB for production)
+user_unlocked = set()
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    if user_id in user_unlocked:
+        await update.message.reply_text("Welcome back! You already unlocked the vault. ✅")
+    else:
+        keyboard = [
+            [InlineKeyboardButton("Share to 3 Groups/Channels to Unlock 🔓", switch_inline_query="")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await update.message.reply_text(
+            "🔒 Welcome! To access the vault, share this bot to **3** groups/channels.\n"
+            "Kapag tapos ka na, click 'I've Shared!'", 
+            reply_markup=reply_markup
+        )
+
+async def shared(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    # For demo: you should verify sharing via Telegram API or logs in production
+    user_unlocked.add(user_id)
+    await update.callback_query.answer("✅ Unlocked! You can now access the vault.")
+    await update.callback_query.edit_message_text("Congrats! Vault unlocked. 🎉")
+
+def main():
+    app = ApplicationBuilder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CallbackQueryHandler(shared, pattern="shared"))
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()
